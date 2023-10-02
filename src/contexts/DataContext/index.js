@@ -21,11 +21,13 @@ export const DataProvider = ({ children }) => {
   const [data, setData] = useState(null);
     // Création d'un état pour stocker le dernier événement.
   const [lastEvent, setlastEvent] = useState(null);
+
   const getData = useCallback(async () => {
     try {
       // Appel à la méthode loadData de l'objet api pour charger les données
       const apiData= await api.loadData();
-
+      // Stockage des données
+      setData(apiData);
       // Calcul du dernier événement en triant les événements par date 
       // et en récupérant le premier élément de la liste triée (qui est le dernier événement).
       const last = apiData?.events.sort((evtA, evtB) =>
@@ -34,8 +36,7 @@ export const DataProvider = ({ children }) => {
       // Stockage des données
       setlastEvent(last)
 
-      // Stockage des données
-      setData(apiData);
+     
     } catch (err) {
       setError(err);
     }
