@@ -13,10 +13,8 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const { data } = useData()
-  const last = data?.events.sort((evtA, evtB) =>
-        new Date(evtA.date) > new Date(evtB.date) ? -1 : 1
-    )[0];
+  const { lastEvent } = useData();
+  
   return <>
     <header>
       <Menu />
@@ -117,19 +115,19 @@ const Page = () => {
       </div>
     </main>
     <footer className="row">
-      <div className="col presta">
+    <div className="col presta" data-testid="last-event"> 
         <h3>Notre derniére prestation</h3>
-        {last && last.cover && last.title ? (
-          <EventCard
-            imageSrc={last.cover}
-            title={last.title}
-            date={new Date(last.date)}
-            small
-            label="boom"
-          />
-      ) : (
-          null
-      )}
+        {/* Vérifie si 'lastEvent' existe et que 'lastEvent.cover' et 'lastEvent.title' sont définis */}
+        {lastEvent && lastEvent.cover && lastEvent.title ?(
+        <EventCard
+          imageSrc={lastEvent.cover}
+          title={lastEvent.title}
+          date={new Date(lastEvent.date)}
+          small
+          label="boom"
+        />
+        // Si l'une des conditions précédentes n'est pas satisfaite, ne rend rien (null)
+        ) : null}
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
